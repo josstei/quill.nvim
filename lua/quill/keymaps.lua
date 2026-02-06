@@ -74,7 +74,7 @@ end
 function M.setup()
   local cfg = config.get()
 
-  -- Register operator keymaps (<leader>cc with count support)
+  -- Register operator keymaps (motion operator + line toggle alias)
   if cfg.keymaps.operators then
     operators.setup_operators()
   end

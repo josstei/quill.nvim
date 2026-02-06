@@ -18,9 +18,9 @@ describe("quill.keymaps", function()
     config.setup({})
 
     -- Clear all existing keymaps that might conflict
-    pcall(vim.keymap.del, "n", "gc")
-    pcall(vim.keymap.del, "n", "gcc")
-    pcall(vim.keymap.del, "x", "gc")
+    pcall(vim.keymap.del, "n", "<leader>cc")
+    pcall(vim.keymap.del, "n", "<leader>ccc")
+    pcall(vim.keymap.del, "x", "<leader>cc")
     pcall(vim.keymap.del, "o", "ic")
     pcall(vim.keymap.del, "x", "ic")
     pcall(vim.keymap.del, "o", "ac")
@@ -230,26 +230,26 @@ describe("quill.keymaps", function()
       config.setup({ keymaps = { operators = true } })
       keymaps.setup()
 
-      local gc_mapping = vim.fn.maparg("gc", "n", false, true)
-      local gcc_mapping = vim.fn.maparg("gcc", "n", false, true)
-      local gc_visual = vim.fn.maparg("gc", "x", false, true)
+      local cc_mapping = vim.fn.maparg("<leader>cc", "n", false, true)
+      local ccc_mapping = vim.fn.maparg("<leader>ccc", "n", false, true)
+      local cc_visual = vim.fn.maparg("<leader>cc", "x", false, true)
 
-      assert.is_not_nil(gc_mapping.lhs)
-      assert.is_not_nil(gcc_mapping.lhs)
-      assert.is_not_nil(gc_visual.lhs)
+      assert.is_not_nil(cc_mapping.lhs)
+      assert.is_not_nil(ccc_mapping.lhs)
+      assert.is_not_nil(cc_visual.lhs)
     end)
 
     it("should not register operator keymaps when disabled", function()
       config.setup({ keymaps = { operators = false } })
       keymaps.setup()
 
-      local gc_mapping = vim.fn.maparg("gc", "n", false, true)
-      local gcc_mapping = vim.fn.maparg("gcc", "n", false, true)
-      local gc_visual = vim.fn.maparg("gc", "x", false, true)
+      local cc_mapping = vim.fn.maparg("<leader>cc", "n", false, true)
+      local ccc_mapping = vim.fn.maparg("<leader>ccc", "n", false, true)
+      local cc_visual = vim.fn.maparg("<leader>cc", "x", false, true)
 
-      assert.is_nil(gc_mapping.lhs)
-      assert.is_nil(gcc_mapping.lhs)
-      assert.is_nil(gc_visual.lhs)
+      assert.is_nil(cc_mapping.lhs)
+      assert.is_nil(ccc_mapping.lhs)
+      assert.is_nil(cc_visual.lhs)
     end)
 
     it("should register textobject keymaps when enabled", function()
@@ -379,9 +379,9 @@ describe("quill.keymaps", function()
       keymaps.setup()
 
       -- Operators
-      assert.is_not_nil(vim.fn.maparg("gc", "n", false, true).lhs)
-      assert.is_not_nil(vim.fn.maparg("gcc", "n", false, true).lhs)
-      assert.is_not_nil(vim.fn.maparg("gc", "x", false, true).lhs)
+      assert.is_not_nil(vim.fn.maparg("<leader>cc", "n", false, true).lhs)
+      assert.is_not_nil(vim.fn.maparg("<leader>ccc", "n", false, true).lhs)
+      assert.is_not_nil(vim.fn.maparg("<leader>cc", "x", false, true).lhs)
 
       -- Text objects
       assert.is_not_nil(vim.fn.maparg("ic", "o", false, true).lhs)
@@ -403,9 +403,9 @@ describe("quill.keymaps", function()
       keymaps.setup()
 
       -- Operators
-      assert.is_nil(vim.fn.maparg("gc", "n", false, true).lhs)
-      assert.is_nil(vim.fn.maparg("gcc", "n", false, true).lhs)
-      assert.is_nil(vim.fn.maparg("gc", "x", false, true).lhs)
+      assert.is_nil(vim.fn.maparg("<leader>cc", "n", false, true).lhs)
+      assert.is_nil(vim.fn.maparg("<leader>ccc", "n", false, true).lhs)
+      assert.is_nil(vim.fn.maparg("<leader>cc", "x", false, true).lhs)
 
       -- Text objects
       assert.is_nil(vim.fn.maparg("ic", "o", false, true).lhs)

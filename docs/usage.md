@@ -55,7 +55,7 @@ require("quill").setup({
 
   -- Enable/disable keymap groups
   keymaps = {
-    operators = true,     -- gc (operator), gcc (line), visual gc
+    operators = true,     -- <leader>cc (operator), <leader>ccc (line), visual <leader>cc
     textobjects = true,   -- ic, ac, iC, aC
     leader = true,        -- <leader>cd, <leader>cD, <leader>cn, <leader>ca
   },
@@ -70,8 +70,8 @@ require("quill").setup({
 
   -- Customize operator mapping
   operators = {
-    toggle = "gc",          -- Operator: gc{motion}, e.g. gcap, gcac
-    toggle_line = nil,      -- Auto-derived: gcc. Set explicitly to override.
+    toggle = "<leader>cc",  -- Operator: <leader>cc{motion}, e.g. <leader>ccap
+    toggle_line = nil,      -- Auto-derived: <leader>ccc. Set explicitly to override.
   },
 
   -- Customize text object mappings
@@ -107,12 +107,12 @@ require("quill").setup({
 
 | Mode | Mapping | Description |
 |------|---------|-------------|
-| Normal | `gc{motion}` | Toggle comment over a motion (e.g., `gcap`, `gcac`, `gc5j`) |
-| Normal | `gcc` | Toggle comment on current line |
-| Normal | `[count]gcc` | Toggle comment on N lines (e.g., `3gcc`) |
-| Visual | `gc` | Toggle comment on selection |
-| Visual-line (multi-line) | `gc` | Toggle with block comments (when language supports) |
-| Block Visual | `gc` | Toggle with block comments (when language supports) |
+| Normal | `<leader>cc{motion}` | Toggle comment over a motion (e.g., `<leader>ccap`, `<leader>ccac`, `<leader>cc5j`) |
+| Normal | `<leader>ccc` | Toggle comment on current line |
+| Normal | `[count]<leader>ccc` | Toggle comment on N lines (e.g., `3<leader>ccc`) |
+| Visual | `<leader>cc` | Toggle comment on selection |
+| Visual-line (multi-line) | `<leader>cc` | Toggle with block comments (when language supports) |
+| Block Visual | `<leader>cc` | Toggle with block comments (when language supports) |
 
 ### Text Objects
 
@@ -160,7 +160,7 @@ Initialize the plugin with optional configuration.
 
 ```lua
 quill.setup({
-  operators = { toggle = "gc" },
+  operators = { toggle = "<leader>cc" },
 })
 ```
 

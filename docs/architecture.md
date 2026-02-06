@@ -345,9 +345,9 @@ Provides undo grouping for multi-line operations:
 
 Uses Vim's `g@` mechanism to create a composable operator:
 
-- `gc{motion}` sets `operatorfunc` and returns `g@`, letting Vim handle the motion
-- `gcc` returns `count .. "g@_"` where `_` is the current-line motion
-- Visual `gc` captures `vim.fn.mode()` into an `OperatorContext` before returning `g@`
+- `<leader>cc{motion}` sets `operatorfunc` and returns `g@`, letting Vim handle the motion
+- `<leader>ccc` returns `count .. "g@_"` where `_` is the current-line motion
+- Visual `<leader>cc` captures `vim.fn.mode()` into an `OperatorContext` before returning `g@`
 - The `operatorfunc` callback reads `'[`/`']` marks and delegates to `toggle.toggle_lines()`
 - Visual context determines block vs line comment style (block for V-line/block-visual multi-line)
 
@@ -461,7 +461,7 @@ sequenceDiagram
     participant Undo
     participant Buffer
 
-    User->>Vim: gc{motion} or gcc
+    User->>Vim: <leader>cc{motion} or <leader>ccc
     Vim->>Operator: operatorfunc(motion_type)
     Note over Operator: Reads '[ and '] marks
     Operator->>Toggle: toggle_lines(bufnr, start, end, opts)
