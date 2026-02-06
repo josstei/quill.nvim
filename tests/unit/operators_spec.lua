@@ -345,30 +345,35 @@ describe("quill.operators", function()
     it("should register default keymaps", function()
       operators.setup_operators()
 
-      local cc_map = vim.fn.maparg("<leader>cc", "n", false, true)
-      local cc_visual_map = vim.fn.maparg("<leader>cc", "x", false, true)
+      local gc_map = vim.fn.maparg("gc", "n", false, true)
+      local gcc_map = vim.fn.maparg("gcc", "n", false, true)
+      local gc_visual_map = vim.fn.maparg("gc", "x", false, true)
 
-      assert.truthy(cc_map)
-      assert.truthy(cc_visual_map)
+      assert.truthy(gc_map)
+      assert.truthy(gcc_map)
+      assert.truthy(gc_visual_map)
 
-      assert.are.equal("Toggle comment (use count for multiple lines)", cc_map.desc)
-      assert.are.equal("Toggle comment on selection", cc_visual_map.desc)
+      assert.are.equal("Toggle comment (operator)", gc_map.desc)
+      assert.are.equal("Toggle comment on line(s)", gcc_map.desc)
+      assert.are.equal("Toggle comment on selection", gc_visual_map.desc)
     end)
 
     it("should respect config for mapping names", function()
       config.setup({
         operators = {
-          toggle = "gcc",
+          toggle = "cm",
         },
       })
 
       operators.setup_operators()
 
-      local gcc_map = vim.fn.maparg("gcc", "n", false, true)
-      local gcc_visual_map = vim.fn.maparg("gcc", "x", false, true)
+      local cm_map = vim.fn.maparg("cm", "n", false, true)
+      local cmm_map = vim.fn.maparg("cmm", "n", false, true)
+      local cm_visual_map = vim.fn.maparg("cm", "x", false, true)
 
-      assert.truthy(gcc_map)
-      assert.truthy(gcc_visual_map)
+      assert.truthy(cm_map)
+      assert.truthy(cmm_map)
+      assert.truthy(cm_visual_map)
     end)
 
     it("should allow override via opts parameter", function()
@@ -377,10 +382,26 @@ describe("quill.operators", function()
       })
 
       local gx_map = vim.fn.maparg("gx", "n", false, true)
+      local gxx_map = vim.fn.maparg("gxx", "n", false, true)
       local gx_visual = vim.fn.maparg("gx", "x", false, true)
 
       assert.truthy(gx_map)
+      assert.truthy(gxx_map)
       assert.truthy(gx_visual)
+    end)
+
+    it("should allow explicit toggle_line override", function()
+      operators.setup_operators({
+        toggle = "gc",
+        toggle_line = "<leader>cc",
+      })
+
+      local gc_map = vim.fn.maparg("gc", "n", false, true)
+      local cc_map = vim.fn.maparg("<leader>cc", "n", false, true)
+
+      assert.truthy(gc_map)
+      assert.truthy(cc_map)
+      assert.are.equal("Toggle comment on line(s)", cc_map.desc)
     end)
   end)
 

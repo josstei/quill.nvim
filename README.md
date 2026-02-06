@@ -29,17 +29,27 @@ use {
 
 ### Basic Usage
 
-Toggle comments with `<leader>cc` in normal or visual mode:
+`gc` is a full Vim operator -- compose it with any motion or text object:
+
+```
+gcc             Toggle current line
+3gcc            Toggle 3 lines
+gcap            Toggle a paragraph
+gcac            Uncomment a comment block (from inside it)
+gc5j            Toggle 5 lines down
+gcG             Toggle to end of file
+Vjjgc           Visual select 3 lines, toggle
+```
 
 ```lua
--- Before: cursor on this line, press <leader>cc
+-- Before: cursor on this line, press gcc
 local x = 42
 
 -- After:
 -- local x = 42
 ```
 
-Prefix with a count to toggle multiple lines -- `5<leader>cc` toggles 5 lines from the cursor. In visual block mode, Quill uses block comments when the language supports them.
+In visual-line and block-visual mode, Quill uses block comments when the language supports them. The operator supports dot-repeat (`.`).
 
 ## Features
 
@@ -137,8 +147,9 @@ Supports Python decorators/docstrings and JSDoc comments in JavaScript/TypeScrip
 
 | Mapping | Mode | Description |
 |---------|------|-------------|
-| `<leader>cc` | Normal | Toggle comment on current line (count-aware) |
-| `<leader>cc` | Visual | Toggle comment on selection |
+| `gc{motion}` | Normal | Toggle comment over a motion (e.g., `gcap`, `gcac`, `gc5j`) |
+| `gcc` | Normal | Toggle comment on current line (count-aware: `3gcc`) |
+| `gc` | Visual | Toggle comment on selection |
 | `<leader>cd` | Normal | Toggle debug regions in buffer |
 | `<leader>cD` | Normal | Toggle debug regions across project |
 | `<leader>cn` | Normal | Normalize comment spacing |
@@ -197,7 +208,8 @@ require("quill").setup({
   },
 
   operators = {
-    toggle = "<leader>cc",
+    toggle = "gc",
+    toggle_line = nil,
   },
 
   textobjects = {

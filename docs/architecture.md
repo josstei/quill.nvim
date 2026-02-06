@@ -339,6 +339,18 @@ Provides undo grouping for multi-line operations:
 - Supports nesting (tracks depth)
 - Error-safe cleanup
 
+### Operators (`operators.lua`)
+
+**Pattern:** Vim Operator via `operatorfunc`
+
+Uses Vim's `g@` mechanism to create a composable operator:
+
+- `gc{motion}` sets `operatorfunc` and returns `g@`, letting Vim handle the motion
+- `gcc` returns `count .. "g@_"` where `_` is the current-line motion
+- Visual `gc` captures `vim.fn.mode()` into an `OperatorContext` before returning `g@`
+- The `operatorfunc` callback reads `'[`/`']` marks and delegates to `toggle.toggle_lines()`
+- Visual context determines block vs line comment style (block for V-line/block-visual multi-line)
+
 ### Keymaps (`keymaps.lua`)
 
 **Pattern:** Unified Registration with Conflict Detection
@@ -441,6 +453,7 @@ Semantic-aware selection expansion:
 ```mermaid
 sequenceDiagram
     participant User
+    participant Vim
     participant Operator
     participant Toggle
     participant Detect
@@ -448,8 +461,10 @@ sequenceDiagram
     participant Undo
     participant Buffer
 
-    User->>Operator: <leader>cc
-    Operator->>Toggle: toggle_lines(bufnr, start, end)
+    User->>Vim: gc{motion} or gcc
+    Vim->>Operator: operatorfunc(motion_type)
+    Note over Operator: Reads '[ and '] marks
+    Operator->>Toggle: toggle_lines(bufnr, start, end, opts)
     Toggle->>Toggle: analyze_lines()
     Toggle->>Detect: get_comment_style(bufnr, line, col)
     Detect->>Detect: TreeSitter or fallback

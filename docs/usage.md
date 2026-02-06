@@ -28,7 +28,7 @@ require("quill").setup()
 -- Setup with custom options
 require("quill").setup({
   operators = {
-    toggle = "gcc",  -- Use classic gc-style mapping
+    toggle = "cm",  -- Use custom operator key
   },
   align = {
     column = 100,
@@ -55,7 +55,7 @@ require("quill").setup({
 
   -- Enable/disable keymap groups
   keymaps = {
-    operators = true,     -- <leader>cc (count-aware), visual <leader>cc
+    operators = true,     -- gc (operator), gcc (line), visual gc
     textobjects = true,   -- ic, ac, iC, aC
     leader = true,        -- <leader>cd, <leader>cD, <leader>cn, <leader>ca
   },
@@ -70,7 +70,8 @@ require("quill").setup({
 
   -- Customize operator mapping
   operators = {
-    toggle = "<leader>cc",  -- Count-aware: 5<leader>cc toggles 5 lines
+    toggle = "gc",          -- Operator: gc{motion}, e.g. gcap, gcac
+    toggle_line = nil,      -- Auto-derived: gcc. Set explicitly to override.
   },
 
   -- Customize text object mappings
@@ -106,11 +107,12 @@ require("quill").setup({
 
 | Mode | Mapping | Description |
 |------|---------|-------------|
-| Normal | `<leader>cc` | Toggle comment on current line |
-| Normal | `[count]<leader>cc` | Toggle comment on N lines (e.g., `5<leader>cc`) |
-| Visual (single line) | `<leader>cc` | Toggle with line comments |
-| Visual (multi-line) | `<leader>cc` | Toggle with block comments (when language supports) |
-| Block Visual | `<leader>cc` | Toggle with block comments (when language supports) |
+| Normal | `gc{motion}` | Toggle comment over a motion (e.g., `gcap`, `gcac`, `gc5j`) |
+| Normal | `gcc` | Toggle comment on current line |
+| Normal | `[count]gcc` | Toggle comment on N lines (e.g., `3gcc`) |
+| Visual | `gc` | Toggle comment on selection |
+| Visual-line (multi-line) | `gc` | Toggle with block comments (when language supports) |
+| Block Visual | `gc` | Toggle with block comments (when language supports) |
 
 ### Text Objects
 
@@ -374,7 +376,7 @@ require("quill").setup({
 ```lua
 require("quill").setup({
   operators = {
-    toggle = "gcc",  -- Use classic gc-style mapping
+    toggle = "cm",  -- Use custom operator key
   },
   textobjects = {
     inner_block = "ib",
@@ -434,7 +436,7 @@ quill.toggle_line()
 quill.toggle_range(10, 15)
 
 -- Toggle visual selection (custom mapping example)
-vim.keymap.set("x", "<leader>cc", function()
+vim.keymap.set("x", "<leader>tc", function()
   local start_line = vim.fn.line("'<")
   local end_line = vim.fn.line("'>")
   quill.toggle_range(start_line, end_line)

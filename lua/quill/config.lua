@@ -25,7 +25,8 @@ local DEFAULTS = {
   },
 
   operators = {
-    toggle = "<leader>cc",
+    toggle = "gc",
+    toggle_line = nil,
   },
 
   textobjects = {
@@ -90,6 +91,7 @@ local VALIDATION_SCHEMA = {
     type = "table",
     fields = {
       toggle = { type = "string" },
+      toggle_line = { type = "string" },
     },
   },
   textobjects = {
