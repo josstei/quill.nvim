@@ -1,1 +1,36 @@
+# Dependencies
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Neovim
 .worktrees/
+*.shada
+spell/
+
+# Claude
+CLAUDE.md
+.claude/
+
+# Build artifacts
+*.o
+*.so
+*.dylib
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
+debug.log
+
+# Internal development plans
+docs/plans/
