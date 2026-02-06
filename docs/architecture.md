@@ -2,7 +2,7 @@
 
 ## Overview
 
-Quill.nvim is a Neovim plugin for intelligent comment toggling with TreeSitter-based context detection, support for 40+ languages, and advanced features like debug region management and trailing comment alignment.
+Quill.nvim is a Neovim plugin for intelligent comment toggling with TreeSitter-based context detection, support for 47 languages, and advanced features like debug region management and trailing comment alignment.
 
 ## Directory Structure
 
@@ -25,7 +25,7 @@ quill.nvim/
 │   │   ├── comment.lua            # Comment marker manipulation
 │   │   └── undo.lua               # Undo group management
 │   ├── detection/
-│   │   ├── languages.lua          # Language definitions (40+ languages)
+│   │   ├── languages.lua          # Language definitions (47 languages)
 │   │   ├── regex.lua              # Regex-based comment detection
 │   │   └── treesitter.lua         # TreeSitter-based detection
 │   └── features/
@@ -356,7 +356,7 @@ All keymap registration flows through `M.register(modes, lhs, rhs, opts)`:
 
 **Pattern:** Registry
 
-Contains 40+ language definitions with:
+Contains 47 language definitions with:
 - Line comment marker (e.g., `//`, `#`, `--`)
 - Block comment pair (e.g., `{ "/*", "*/" }`)
 - Nesting support flag

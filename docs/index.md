@@ -1,6 +1,6 @@
 # Quill.nvim Documentation
 
-Intelligent comment toggling for Neovim with TreeSitter-based context detection, 46 built-in languages, and advanced features like debug region management and trailing comment alignment.
+Intelligent comment toggling for Neovim with TreeSitter-based context detection, 47 built-in languages, and advanced features like debug region management and trailing comment alignment.
 
 ## Documentation
 
@@ -31,7 +31,7 @@ Intelligent comment toggling for Neovim with TreeSitter-based context detection,
 | Feature | Description |
 |---------|-------------|
 | **Intelligent Detection** | TreeSitter-based context detection with filetype and `commentstring` fallback |
-| **46 Languages** | Built-in support for Lua, Python, JavaScript, TypeScript, Go, Rust, and more |
+| **47 Languages** | Built-in support for Lua, Python, JavaScript, TypeScript, Go, Rust, and more |
 | **JSX Support** | Automatic `{/* */}` comment style in JSX/TSX markup regions |
 | **Text Objects** | `ic`/`ac` for comment blocks, `iC`/`aC` for comment lines |
 | **Debug Regions** | Toggle `#region debug` blocks in buffer or project-wide |

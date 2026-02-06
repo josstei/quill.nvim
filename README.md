@@ -1,28 +1,12 @@
 # quill.nvim
 
-Intelligent comment toggling for Neovim. TreeSitter-aware, 46 languages built-in, zero configuration required.
+Intelligent comment toggling for Neovim. TreeSitter-aware, 47 languages built-in, zero configuration required.
 
-## Features
+## Quick Start
 
-| Feature | Description |
-|---------|-------------|
-| **Smart Toggle** | Analyzes current state to comment or uncomment. Count-aware: `5<leader>cc` toggles 5 lines |
-| **TreeSitter Detection** | Context-aware language detection for embedded languages, JSX/TSX, and mixed files |
-| **Text Objects** | Select and operate on comment blocks (`ic`, `ac`) and comment lines (`iC`, `aC`) |
-| **Debug Regions** | Toggle `#region debug` blocks in a single buffer or across an entire project |
-| **Normalization** | Fix spacing inconsistencies: `//foo` becomes `// foo`, `/*baz*/` becomes `/* baz */` |
-| **Alignment** | Align trailing comments to a consistent column across a selection |
-| **Style Conversion** | Convert between line (`//`) and block (`/* */`) comment styles |
-| **46 Languages** | Built-in support with automatic fallback to `commentstring` for others |
+### Installation
 
-## Requirements
-
-- Neovim >= 0.10
-- TreeSitter (optional, enhances detection accuracy for embedded languages and JSX)
-
-## Installation
-
-### lazy.nvim
+**lazy.nvim**
 
 ```lua
 {
@@ -32,7 +16,7 @@ Intelligent comment toggling for Neovim. TreeSitter-aware, 46 languages built-in
 }
 ```
 
-### packer.nvim
+**packer.nvim**
 
 ```lua
 use {
@@ -43,51 +27,137 @@ use {
 }
 ```
 
-No configuration is needed. Quill works out of the box with sensible defaults.
+### Basic Usage
 
-## Keybindings
+Toggle comments with `<leader>cc` in normal or visual mode:
 
-### Toggle
+```lua
+-- Before: cursor on this line, press <leader>cc
+local x = 42
 
-| Mapping | Mode | Description |
-|---------|------|-------------|
-| `<leader>cc` | Normal | Toggle comment on current line |
-| `[count]<leader>cc` | Normal | Toggle comment on N lines (e.g., `5<leader>cc`) |
-| `<leader>cc` | Visual | Toggle comment on selection |
-| `<leader>cc` | Block Visual | Toggle with block comments when supported |
+-- After:
+-- local x = 42
+```
+
+Prefix with a count to toggle multiple lines -- `5<leader>cc` toggles 5 lines from the cursor. In visual block mode, Quill uses block comments when the language supports them.
+
+## Features
 
 ### Text Objects
 
-| Mapping | Description |
-|---------|-------------|
+Select and operate on comments using standard Vim motions:
+
+| Object | Scope |
+|--------|-------|
 | `ic` | Inner comment block (content only) |
 | `ac` | Around comment block (includes markers) |
 | `iC` | Inner comment line (content only) |
 | `aC` | Around comment line (entire line) |
 
-Use with any operator: `dic` (delete), `cac` (change), `yiC` (yank), `vaC` (select).
+Combine with any operator: `dic` (delete), `cac` (change), `yiC` (yank), `vaC` (select).
 
-### Leader Mappings
+### JSX-Aware Commenting
 
-| Mapping | Description |
-|---------|-------------|
-| `<leader>cd` | Toggle debug comments in buffer |
-| `<leader>cD` | Toggle debug comments across project |
-| `<leader>cn` | Normalize comment spacing in buffer |
-| `<leader>ca` | Align trailing comments |
+In React files (`.jsx`, `.tsx`), Quill detects context and applies the correct comment style automatically:
+
+```jsx
+function App() {
+  // JavaScript context uses // comments
+  return (
+    <div>
+      {/* JSX context uses {/* */} comments */}
+      <span>{value /* Expression context uses /* */ */}</span>
+    </div>
+  );
+}
+```
+
+### Debug Regions
+
+Mark code sections with `#region debug` / `#endregion` and toggle them in bulk:
+
+```javascript
+// #region debug
+console.log("Debug info:", data);
+debugger;
+// #endregion
+```
+
+`<leader>cd` comments out the contents. Run again to uncomment. `<leader>cD` toggles every debug region across all project files at once.
+
+### Normalization
+
+Fix inconsistent comment spacing across a buffer or selection with `<leader>cn`:
+
+```javascript
+// Before                    // After
+//foo                        // foo
+//  bar                      // bar
+/*baz*/                      /* baz */
+/*   qux   */                /* qux */
+```
+
+### Trailing Comment Alignment
+
+Align inline comments to a consistent column. Use `<leader>ca` on a single line, or `:'<,'>Quill align` over a visual selection:
+
+```javascript
+// Before                              // After
+const x = 1; // short                  const x = 1;               // short
+const longVariableName = 2; // value   const longVariableName = 2; // value
+```
+
+### Style Conversion
+
+Convert between line and block comment styles with the `:Quill convert` command:
+
+```javascript
+// Before :Quill convert block       // After
+// first line                         /* first line
+// second line                           second line */
+```
+
+### Semantic Selection
+
+When commenting functions, Quill can automatically expand the selection to include attached decorators and doc comments. This is controlled by the `semantic` config options:
+
+```python
+# With include_decorators = true and include_doc_comments = true,
+# commenting the function also includes the decorator and docstring:
+
+@app.route("/api")          # <-- included
+def handle_request():
+    """Handle the request."""  # <-- included
+    return response
+```
+
+Supports Python decorators/docstrings and JSDoc comments in JavaScript/TypeScript. See [Configuration](#configuration) for options.
+
+## Keybindings
+
+| Mapping | Mode | Description |
+|---------|------|-------------|
+| `<leader>cc` | Normal | Toggle comment on current line (count-aware) |
+| `<leader>cc` | Visual | Toggle comment on selection |
+| `<leader>cd` | Normal | Toggle debug regions in buffer |
+| `<leader>cD` | Normal | Toggle debug regions across project |
+| `<leader>cn` | Normal | Normalize comment spacing |
+| `<leader>ca` | Normal | Align trailing comments on current line |
+
+All keybinding groups can be disabled individually -- see [Configuration](#configuration).
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
 | `:Quill debug` | Toggle debug regions in buffer |
-| `:Quill debug --project` | Toggle debug regions across project |
+| `:Quill debug --project` | Preview debug regions across project in quickfix |
 | `:Quill debug --list` | List debug regions in quickfix window |
 | `:Quill normalize` | Normalize comment spacing in buffer |
-| `:'<,'>Quill normalize` | Normalize comment spacing in selection |
+| `:'<,'>Quill normalize` | Normalize spacing in selection |
 | `:'<,'>Quill align` | Align trailing comments in selection |
-| `:'<,'>Quill convert line` | Convert selection to line comments |
-| `:'<,'>Quill convert block` | Convert selection to block comments |
+| `:'<,'>Quill convert line` | Convert to line comments |
+| `:'<,'>Quill convert block` | Convert to block comments |
 
 ## Supported Languages
 
@@ -102,110 +172,59 @@ Use with any operator: `dic` (delete), `cac` (change), `yiC` (yank), `vaC` (sele
 | **Data/Config** | SQL, JSON, JSONC, YAML, TOML, XML, Markdown |
 | **Other** | PHP, C#, R, LaTeX, Vim, Nim |
 
-Languages not in this list fall back to Neovim's `commentstring` option automatically.
-
-## JSX Support
-
-Quill detects JSX context in React files (`.jsx`, `.tsx`) and applies the correct comment style per region:
-
-```jsx
-function App() {
-  // JavaScript context uses // comments
-  return (
-    <div>
-      {/* JSX context uses {/* */} comments */}
-      <span>{value /* Expression context uses /* */ */}</span>
-    </div>
-  );
-}
-```
-
-## Debug Regions
-
-Mark code sections with `#region debug` / `#endregion` markers and toggle them in bulk:
-
-```javascript
-// #region debug
-console.log("Debug info:", data);
-debugger;
-// #endregion
-```
-
-`:Quill debug` comments out the contents. Run again to uncomment. Use `:Quill debug --project` to toggle every debug region across all project files at once.
-
-## Normalization
-
-Fix inconsistent comment spacing across a buffer or selection:
-
-```javascript
-// Before                    // After :Quill normalize
-//foo                        // foo
-//  bar                      // bar
-/*baz*/                      /* baz */
-/*   qux   */                /* qux */
-```
-
-## Trailing Comment Alignment
-
-Align inline comments to a consistent column:
-
-```javascript
-// Before                              // After :'<,'>Quill align
-const x = 1; // short                  const x = 1;               // short
-const longVariableName = 2; // value   const longVariableName = 2; // value
-```
+Languages not listed here fall back to Neovim's `commentstring` automatically.
 
 ## Configuration
 
-All options are optional. Shown here with their defaults:
+All options are optional. Shown here with defaults:
 
 ```lua
 require("quill").setup({
   align = {
-    column = 80,                     -- Target column for trailing comment alignment
-    min_gap = 2,                     -- Minimum spaces before aligned comment
+    column = 80,
+    min_gap = 2,
   },
 
   debug = {
-    start_marker = "#region debug",  -- Debug region start marker
-    end_marker = "#endregion",       -- Debug region end marker
+    start_marker = "#region debug",
+    end_marker = "#endregion",
   },
 
   keymaps = {
-    operators = true,                -- Enable <leader>cc toggle mappings
-    textobjects = true,              -- Enable ic, ac, iC, aC text objects
-    leader = true,                   -- Enable <leader>cd, cD, cn, ca mappings
+    operators = true,
+    textobjects = true,
+    leader = true,
   },
 
   operators = {
-    toggle = "<leader>cc",           -- Toggle operator mapping
+    toggle = "<leader>cc",
   },
 
   textobjects = {
-    inner_block = "ic",              -- Inner comment block
-    around_block = "ac",             -- Around comment block
-    inner_line = "iC",               -- Inner comment line
-    around_line = "aC",              -- Around comment line
+    inner_block = "ic",
+    around_block = "ac",
+    inner_line = "iC",
+    around_line = "aC",
   },
 
   mappings = {
-    debug_buffer = "<leader>cd",     -- Toggle debug in buffer
-    debug_project = "<leader>cD",    -- Toggle debug in project
-    normalize = "<leader>cn",        -- Normalize spacing
-    align = "<leader>ca",            -- Align trailing comments
+    debug_buffer = "<leader>cd",
+    debug_project = "<leader>cD",
+    normalize = "<leader>cn",
+    align = "<leader>ca",
   },
 
-  warn_on_override = true,           -- Warn when overriding existing keymaps
+  warn_on_override = true,
 
-  languages = {},                    -- Custom language definitions (extends built-in)
+  languages = {},
 
   jsx = {
-    auto_detect = true,              -- Auto-detect JSX context in React files
+    auto_detect = true,
   },
 
   semantic = {
-    include_decorators = true,       -- Include decorators when selecting functions
-    include_doc_comments = true,     -- Include doc comments when selecting functions
+    include_decorators = true,
+    include_doc_comments = true,
   },
 })
 ```
@@ -227,14 +246,14 @@ require("quill").setup({
 })
 ```
 
-### Disable Keymap Groups
+### Disabling Keymap Groups
 
 ```lua
 require("quill").setup({
   keymaps = {
-    operators = false,    -- Disable toggle mappings
-    textobjects = false,  -- Disable text objects
-    leader = false,       -- Disable leader mappings
+    operators = false,
+    textobjects = false,
+    leader = false,
   },
 })
 ```
@@ -259,11 +278,16 @@ quill.toggle_debug("project")                  -- Toggle debug regions in projec
 
 All line numbers are 1-indexed. See [docs/usage.md](docs/usage.md) for full API reference with examples.
 
+## Requirements
+
+- Neovim >= 0.10
+- TreeSitter (optional -- enhances detection for embedded languages and JSX)
+
 ## Documentation
 
 | Document | Description |
 |----------|-------------|
-| [Usage Guide](docs/usage.md) | Configuration reference, keybindings, commands, full API, and extension examples |
+| [Usage Guide](docs/usage.md) | Configuration, keybindings, commands, full API, and extension examples |
 | [Architecture](docs/architecture.md) | Module structure, dependency graph, design patterns, and data flow |
 | [Conventions](docs/conventions.md) | Naming conventions, code style, and contribution guidelines |
 

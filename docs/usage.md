@@ -137,7 +137,7 @@ require("quill").setup({
 | Command | Description |
 |---------|-------------|
 | `:Quill debug` | Toggle debug regions in buffer |
-| `:Quill debug --project` | Toggle debug regions in project |
+| `:Quill debug --project` | Preview debug regions across project in quickfix |
 | `:Quill debug --list` | List debug regions |
 | `:Quill normalize` | Normalize comment spacing |
 | `:'<,'>Quill align` | Align trailing comments in selection |
