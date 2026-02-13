@@ -27,11 +27,6 @@ function M.with_undo_group(fn)
     undo_state.in_group = true
   end
 
-  -- Begin the undo group
-  -- Using pcall to catch potential errors in undojoin
-  -- (undojoin fails on first change in buffer, which is expected and fine)
-  pcall(vim.cmd, "undojoin")
-
   -- Execute the function, capturing any errors
   local success, result = pcall(fn)
 
@@ -64,10 +59,6 @@ function M.start_undo_group()
   -- Nested groups are automatically part of the parent group
   if undo_state.level == 1 then
     undo_state.in_group = true
-
-    -- Try to join with previous undo block
-    -- This may fail on first buffer modification (expected behavior)
-    pcall(vim.cmd, "undojoin")
   end
 end
 

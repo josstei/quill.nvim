@@ -62,6 +62,8 @@ function M.operatorfunc(motion_type)
   if not success then
     vim.notify("[quill] " .. (err or "Failed to toggle comments"), vim.log.levels.ERROR)
   end
+
+  vim.cmd("redraw")
 end
 
 ---Derive the line-wise toggle key from the operator key
