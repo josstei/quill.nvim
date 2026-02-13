@@ -1,5 +1,5 @@
 ---Operator implementation for comment toggling via operatorfunc
----Provides configurable {toggle}{motion}, line-wise alias, and visual mappings
+---Provides gc{motion}, gcc (line-wise), and visual gc mappings
 ---Uses Vim's g@ mechanism for full composability with motions and text objects
 ---@module quill.operators
 
@@ -65,7 +65,7 @@ function M.operatorfunc(motion_type)
 end
 
 ---Derive the line-wise toggle key from the operator key
----Doubles the last character: "<leader>cc" -> "<leader>ccc", "cm" -> "cmm"
+---Doubles the last character: "gc" -> "gcc", "cm" -> "cmm"
 ---@param toggle_key string The operator key
 ---@return string
 local function derive_line_key(toggle_key)
@@ -147,7 +147,7 @@ function M.visual_toggle()
 end
 
 ---Setup operator keymaps using operatorfunc
----Registers toggle (operator), toggle_line (line-wise), and visual toggle mappings
+---Registers gc (operator), gcc (line-wise), and visual gc
 ---@param opts table|nil Configuration options
 ---@return nil
 function M.setup_operators(opts)

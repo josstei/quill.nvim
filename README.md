@@ -29,20 +29,20 @@ use {
 
 ### Basic Usage
 
-`<leader>cc` is a full Vim operator -- compose it with any motion or text object:
+`gc` is a full Vim operator -- compose it with any motion or text object:
 
 ```
-<leader>ccc             Toggle current line
-3<leader>ccc            Toggle 3 lines
-<leader>ccap            Toggle a paragraph
-<leader>ccac            Uncomment a comment block (from inside it)
-<leader>cc5j            Toggle 5 lines down
-<leader>ccG             Toggle to end of file
-Vjj<leader>cc           Visual select 3 lines, toggle
+gcc             Toggle current line
+3gcc            Toggle 3 lines
+gcap            Toggle a paragraph
+gcac            Uncomment a comment block (from inside it)
+gc5j            Toggle 5 lines down
+gcG             Toggle to end of file
+Vjjgc           Visual select 3 lines, toggle
 ```
 
 ```lua
--- Before: cursor on this line, press <leader>ccc
+-- Before: cursor on this line, press gcc
 local x = 42
 
 -- After:
@@ -147,9 +147,9 @@ Supports Python decorators/docstrings and JSDoc comments in JavaScript/TypeScrip
 
 | Mapping | Mode | Description |
 |---------|------|-------------|
-| `<leader>cc{motion}` | Normal | Toggle comment over a motion (e.g., `<leader>ccap`, `<leader>ccac`, `<leader>cc5j`) |
-| `<leader>ccc` | Normal | Toggle comment on current line (count-aware: `3<leader>ccc`) |
-| `<leader>cc` | Visual | Toggle comment on selection |
+| `gc{motion}` | Normal | Toggle comment over a motion (e.g., `gcap`, `gcac`, `gc5j`) |
+| `gcc` | Normal | Toggle comment on current line (count-aware: `3gcc`) |
+| `gc` | Visual | Toggle comment on selection |
 | `<leader>cd` | Normal | Toggle debug regions in buffer |
 | `<leader>cD` | Normal | Toggle debug regions across project |
 | `<leader>cn` | Normal | Normalize comment spacing |
@@ -208,7 +208,7 @@ require("quill").setup({
   },
 
   operators = {
-    toggle = "<leader>cc",
+    toggle = "gc",
     toggle_line = nil,
   },
 

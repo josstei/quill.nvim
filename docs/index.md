@@ -43,9 +43,8 @@ Intelligent comment toggling for Neovim with TreeSitter-based context detection,
 
 | Mapping | Mode | Description |
 |---------|------|-------------|
-| `<leader>cc{motion}` | Normal | Toggle over a motion |
-| `<leader>ccc` | Normal | Toggle current line |
-| `[count]<leader>ccc` | Normal | Toggle N lines |
+| `<leader>cc` | Normal | Toggle current line |
+| `[count]<leader>cc` | Normal | Toggle N lines |
 | `<leader>cc` | Visual | Toggle selection |
 | `ic` / `ac` | O-pending, Visual | Inner/around comment block |
 | `iC` / `aC` | O-pending, Visual | Inner/around comment line |

@@ -25,7 +25,7 @@ local DEFAULTS = {
   },
 
   operators = {
-    toggle = "<leader>cc",
+    toggle = "gc",
     toggle_line = nil,
   },
 

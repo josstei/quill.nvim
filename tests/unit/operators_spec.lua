@@ -345,17 +345,17 @@ describe("quill.operators", function()
     it("should register default keymaps", function()
       operators.setup_operators()
 
-      local cc_map = vim.fn.maparg("<leader>cc", "n", false, true)
-      local ccc_map = vim.fn.maparg("<leader>ccc", "n", false, true)
-      local cc_visual_map = vim.fn.maparg("<leader>cc", "x", false, true)
+      local gc_map = vim.fn.maparg("gc", "n", false, true)
+      local gcc_map = vim.fn.maparg("gcc", "n", false, true)
+      local gc_visual_map = vim.fn.maparg("gc", "x", false, true)
 
-      assert.truthy(cc_map)
-      assert.truthy(ccc_map)
-      assert.truthy(cc_visual_map)
+      assert.truthy(gc_map)
+      assert.truthy(gcc_map)
+      assert.truthy(gc_visual_map)
 
-      assert.are.equal("Toggle comment (operator)", cc_map.desc)
-      assert.are.equal("Toggle comment on line(s)", ccc_map.desc)
-      assert.are.equal("Toggle comment on selection", cc_visual_map.desc)
+      assert.are.equal("Toggle comment (operator)", gc_map.desc)
+      assert.are.equal("Toggle comment on line(s)", gcc_map.desc)
+      assert.are.equal("Toggle comment on selection", gc_visual_map.desc)
     end)
 
     it("should respect config for mapping names", function()
@@ -392,16 +392,16 @@ describe("quill.operators", function()
 
     it("should allow explicit toggle_line override", function()
       operators.setup_operators({
-        toggle = "<leader>cc",
-        toggle_line = "<leader>cl",
+        toggle = "gc",
+        toggle_line = "<leader>cc",
       })
 
+      local gc_map = vim.fn.maparg("gc", "n", false, true)
       local cc_map = vim.fn.maparg("<leader>cc", "n", false, true)
-      local cl_map = vim.fn.maparg("<leader>cl", "n", false, true)
 
+      assert.truthy(gc_map)
       assert.truthy(cc_map)
-      assert.truthy(cl_map)
-      assert.are.equal("Toggle comment on line(s)", cl_map.desc)
+      assert.are.equal("Toggle comment on line(s)", cc_map.desc)
     end)
   end)
 
