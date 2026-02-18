@@ -74,18 +74,15 @@ end
 function M.setup()
   local cfg = config.get()
 
-  -- Register operator keymaps (gc operator + gcc line toggle)
   if cfg.keymaps.operators then
     operators.setup_operators()
   end
 
-  -- Register textobject keymaps (ic, ac, iC, aC)
   if cfg.keymaps.textobjects then
     local textobjects = require("quill.textobjects")
     textobjects.setup(cfg)
   end
 
-  -- Register leader keymaps
   if cfg.keymaps.leader then
     local debug = require("quill.features.debug")
     local normalize = require("quill.features.normalize")
@@ -94,6 +91,7 @@ function M.setup()
     M.register("n", cfg.mappings.toggle, function()
       operators.toggle_lines_with_count(vim.v.count1)
     end, {
+      silent = true,
       desc = "Toggle comment on line(s)",
     })
 

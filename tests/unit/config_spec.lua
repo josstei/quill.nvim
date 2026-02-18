@@ -75,6 +75,14 @@ describe("config", function()
       assert.equals(80, cfg.align.column)
       assert.equals("gc", cfg.operators.toggle)
     end)
+
+    it("deep merges custom mappings.toggle with defaults", function()
+      config.setup({ mappings = { toggle = "<leader>ct" } })
+      local cfg = config.get()
+      assert.equals("<leader>ct", cfg.mappings.toggle)
+      assert.equals("<leader>cd", cfg.mappings.debug_buffer)
+      assert.equals("<leader>cD", cfg.mappings.debug_project)
+    end)
   end)
 
   describe("validate()", function()
@@ -117,6 +125,10 @@ describe("config", function()
 
     it("rejects invalid mappings.toggle configuration", function()
       assert.is_false(config.validate({ mappings = { toggle = 123 } }))
+    end)
+
+    it("rejects empty string for mappings.toggle", function()
+      assert.is_false(config.validate({ mappings = { toggle = "" } }))
     end)
 
     it("accepts valid mappings.toggle configuration", function()
