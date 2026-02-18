@@ -97,12 +97,9 @@ function M.setup()
       desc = "Toggle comment on line(s)",
     })
 
-    M.register("x", cfg.mappings.toggle, function()
-      local start_line = vim.fn.line("'<")
-      local end_line = vim.fn.line("'>")
-      local mode = vim.fn.visualmode()
-      operators.toggle_visual_range(start_line, end_line, mode)
-    end, {
+    M.register("x", cfg.mappings.toggle,
+      ":<C-u>lua require('quill.operators').visual_toggle()<CR>", {
+      silent = true,
       desc = "Toggle comment on selection",
     })
 

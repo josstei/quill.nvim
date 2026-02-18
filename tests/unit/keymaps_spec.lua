@@ -458,7 +458,7 @@ describe("quill.keymaps", function()
 
       local cc_visual = vim.fn.maparg("<leader>cc", "x", false, true)
       assert.is_not_nil(cc_visual.lhs)
-      assert.is_not_nil(cc_visual.callback)
+      assert.is_not_nil(cc_visual.rhs)
     end)
 
     it("should not register toggle when leader keymaps disabled", function()
