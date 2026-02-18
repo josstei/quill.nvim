@@ -18,6 +18,7 @@ local DEFAULTS = {
   },
 
   mappings = {
+    toggle = "<leader>cc",
     debug_buffer = "<leader>cd",
     debug_project = "<leader>cD",
     normalize = "<leader>cn",
@@ -81,6 +82,7 @@ local VALIDATION_SCHEMA = {
   mappings = {
     type = "table",
     fields = {
+      toggle = { type = "string" },
       debug_buffer = { type = "string" },
       debug_project = { type = "string" },
       normalize = { type = "string" },
