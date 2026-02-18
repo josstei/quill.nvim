@@ -57,11 +57,12 @@ require("quill").setup({
   keymaps = {
     operators = true,     -- gc (operator), gcc (line), visual gc
     textobjects = true,   -- ic, ac, iC, aC
-    leader = true,        -- <leader>cd, <leader>cD, <leader>cn, <leader>ca
+    leader = true,        -- <leader>cc, <leader>cd, <leader>cD, <leader>cn, <leader>ca
   },
 
   -- Customize leader mappings
   mappings = {
+    toggle = "<leader>cc",
     debug_buffer = "<leader>cd",
     debug_project = "<leader>cD",
     normalize = "<leader>cn",
@@ -127,6 +128,9 @@ require("quill").setup({
 
 | Mode | Mapping | Description |
 |------|---------|-------------|
+| Normal | `<leader>cc` | Toggle comment on current line |
+| Normal | `[count]<leader>cc` | Toggle comment on N lines (e.g., `5<leader>cc`) |
+| Visual | `<leader>cc` | Toggle comment on selection |
 | Normal | `<leader>cd` | Toggle debug comments in buffer |
 | Normal | `<leader>cD` | Toggle debug comments in project |
 | Normal | `<leader>cn` | Normalize comment spacing |
@@ -383,6 +387,7 @@ require("quill").setup({
     around_block = "ab",
   },
   mappings = {
+    toggle = "<leader>tt",
     debug_buffer = "<leader>dB",
   },
 })
