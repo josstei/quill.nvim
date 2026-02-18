@@ -29,6 +29,8 @@ describe("quill.keymaps", function()
     pcall(vim.keymap.del, "x", "iC")
     pcall(vim.keymap.del, "o", "aC")
     pcall(vim.keymap.del, "x", "aC")
+    pcall(vim.keymap.del, "n", "<leader>cc")
+    pcall(vim.keymap.del, "x", "<leader>cc")
     pcall(vim.keymap.del, "n", "<leader>cd")
     pcall(vim.keymap.del, "n", "<leader>cD")
     pcall(vim.keymap.del, "n", "<leader>cn")
@@ -291,6 +293,11 @@ describe("quill.keymaps", function()
       assert.is_not_nil(cD_mapping.lhs)
       assert.is_not_nil(cn_mapping.lhs)
       assert.is_not_nil(ca_mapping.lhs)
+
+      local cc_n = vim.fn.maparg("<leader>cc", "n", false, true)
+      local cc_x = vim.fn.maparg("<leader>cc", "x", false, true)
+      assert.is_not_nil(cc_n.lhs)
+      assert.is_not_nil(cc_x.lhs)
     end)
 
     it("should not register leader keymaps when disabled", function()
@@ -302,6 +309,9 @@ describe("quill.keymaps", function()
 
       assert.is_nil(cd_mapping.lhs)
       assert.is_nil(cD_mapping.lhs)
+
+      local cc_n = vim.fn.maparg("<leader>cc", "n", false, true)
+      assert.is_nil(cc_n.lhs)
     end)
 
     it("should use custom operator mappings from config", function()
@@ -388,6 +398,8 @@ describe("quill.keymaps", function()
       assert.is_not_nil(vim.fn.maparg("ac", "o", false, true).lhs)
 
       -- Leader mappings
+      assert.is_not_nil(vim.fn.maparg("<leader>cc", "n", false, true).lhs)
+      assert.is_not_nil(vim.fn.maparg("<leader>cc", "x", false, true).lhs)
       assert.is_not_nil(vim.fn.maparg("<leader>cd", "n", false, true).lhs)
       assert.is_not_nil(vim.fn.maparg("<leader>ca", "n", false, true).lhs)
     end)
@@ -412,6 +424,8 @@ describe("quill.keymaps", function()
       assert.is_nil(vim.fn.maparg("ac", "o", false, true).lhs)
 
       -- Leader mappings
+      assert.is_nil(vim.fn.maparg("<leader>cc", "n", false, true).lhs)
+      assert.is_nil(vim.fn.maparg("<leader>cc", "x", false, true).lhs)
       assert.is_nil(vim.fn.maparg("<leader>cd", "n", false, true).lhs)
       assert.is_nil(vim.fn.maparg("<leader>ca", "n", false, true).lhs)
     end)
@@ -425,6 +439,49 @@ describe("quill.keymaps", function()
       local cd_mapping = vim.fn.maparg("<leader>cd", "n", false, true)
       assert.is_not_nil(cd_mapping.lhs)
       assert.is_not_nil(cd_mapping.callback)
+    end)
+  end)
+
+  describe("toggle mapping", function()
+    it("should register toggle in normal mode when leader keymaps enabled", function()
+      config.setup({ keymaps = { leader = true, operators = false } })
+      keymaps.setup()
+
+      local cc_mapping = vim.fn.maparg("<leader>cc", "n", false, true)
+      assert.is_not_nil(cc_mapping.lhs)
+      assert.is_not_nil(cc_mapping.callback)
+    end)
+
+    it("should register toggle in visual mode when leader keymaps enabled", function()
+      config.setup({ keymaps = { leader = true, operators = false } })
+      keymaps.setup()
+
+      local cc_visual = vim.fn.maparg("<leader>cc", "x", false, true)
+      assert.is_not_nil(cc_visual.lhs)
+      assert.is_not_nil(cc_visual.callback)
+    end)
+
+    it("should not register toggle when leader keymaps disabled", function()
+      config.setup({ keymaps = { leader = false, operators = false } })
+      keymaps.setup()
+
+      local cc_mapping = vim.fn.maparg("<leader>cc", "n", false, true)
+      local cc_visual = vim.fn.maparg("<leader>cc", "x", false, true)
+      assert.is_nil(cc_mapping.lhs)
+      assert.is_nil(cc_visual.lhs)
+    end)
+
+    it("should use custom toggle mapping from config", function()
+      config.setup({
+        keymaps = { leader = true, operators = false },
+        mappings = { toggle = "<leader>ct" },
+      })
+      keymaps.setup()
+
+      local ct_mapping = vim.fn.maparg("<leader>ct", "n", false, true)
+      local ct_visual = vim.fn.maparg("<leader>ct", "x", false, true)
+      assert.is_not_nil(ct_mapping.lhs)
+      assert.is_not_nil(ct_visual.lhs)
     end)
   end)
 end)
