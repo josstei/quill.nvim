@@ -1,3 +1,6 @@
+---Configuration management with schema-based validation
+---@module quill.config
+
 local M = {}
 
 local DEFAULTS = {
@@ -18,6 +21,7 @@ local DEFAULTS = {
   },
 
   mappings = {
+    toggle = "<leader>cc",
     debug_buffer = "<leader>cd",
     debug_project = "<leader>cD",
     normalize = "<leader>cn",
@@ -53,6 +57,7 @@ local DEFAULTS = {
 ---@class ValidationRule
 ---@field type string Expected type ("string", "number", "boolean", "table")
 ---@field required boolean|nil Whether field is required
+---@field min_length number|nil Minimum string length (for string types)
 ---@field fields table<string, ValidationRule>|nil Nested field rules (for tables)
 
 local VALIDATION_SCHEMA = {
@@ -81,26 +86,27 @@ local VALIDATION_SCHEMA = {
   mappings = {
     type = "table",
     fields = {
-      debug_buffer = { type = "string" },
-      debug_project = { type = "string" },
-      normalize = { type = "string" },
-      align = { type = "string" },
+      toggle = { type = "string", min_length = 1 },
+      debug_buffer = { type = "string", min_length = 1 },
+      debug_project = { type = "string", min_length = 1 },
+      normalize = { type = "string", min_length = 1 },
+      align = { type = "string", min_length = 1 },
     },
   },
   operators = {
     type = "table",
     fields = {
-      toggle = { type = "string" },
-      toggle_line = { type = "string" },
+      toggle = { type = "string", min_length = 1 },
+      toggle_line = { type = "string", min_length = 1 },
     },
   },
   textobjects = {
     type = "table",
     fields = {
-      inner_block = { type = "string" },
-      around_block = { type = "string" },
-      inner_line = { type = "string" },
-      around_line = { type = "string" },
+      inner_block = { type = "string", min_length = 1 },
+      around_block = { type = "string", min_length = 1 },
+      inner_line = { type = "string", min_length = 1 },
+      around_line = { type = "string", min_length = 1 },
     },
   },
   warn_on_override = { type = "boolean" },
@@ -133,6 +139,10 @@ local function validate_rule(value, rule, path)
 
   if type(value) ~= rule.type then
     return false, string.format("%s: expected %s, got %s", path, rule.type, type(value))
+  end
+
+  if rule.type == "string" and rule.min_length and #value < rule.min_length then
+    return false, string.format("%s: must be at least %d character(s)", path, rule.min_length)
   end
 
   if rule.type == "table" and rule.fields then

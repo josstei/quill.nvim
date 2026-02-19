@@ -74,22 +74,32 @@ end
 function M.setup()
   local cfg = config.get()
 
-  -- Register operator keymaps (<leader>cc with count support)
   if cfg.keymaps.operators then
     operators.setup_operators()
   end
 
-  -- Register textobject keymaps (ic, ac, iC, aC)
   if cfg.keymaps.textobjects then
     local textobjects = require("quill.textobjects")
     textobjects.setup(cfg)
   end
 
-  -- Register leader keymaps
   if cfg.keymaps.leader then
     local debug = require("quill.features.debug")
     local normalize = require("quill.features.normalize")
     local align = require("quill.features.align")
+
+    M.register("n", cfg.mappings.toggle, function()
+      operators.toggle_lines_with_count(vim.v.count1)
+    end, {
+      silent = true,
+      desc = "Toggle comment on line(s)",
+    })
+
+    M.register("x", cfg.mappings.toggle,
+      ":<C-u>lua require('quill.operators').visual_toggle()<CR>", {
+      silent = true,
+      desc = "Toggle comment on selection",
+    })
 
     M.register("n", cfg.mappings.debug_buffer, function()
       debug.toggle_buffer()
